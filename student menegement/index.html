@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            background: #667eea;
+            color: white;
+            width: 100%;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .btn-add:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-update {
+            background: #4CAF50;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .btn-update:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-delete:hover {
+            background: #da190b;
+            transform: scale(1.05);
+        }
+
+        .students-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .students-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .student-card {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeInLeft 0.5s ease-out;
+            transition: all 0.3s;
+        }
+
+        .student-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .student-info p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .student-info strong {
+            color: #333;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-size: 16px;
+        }
+
+        .edit-mode {
+            border-left-color: #4CAF50;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .student-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .actions {
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="animate__animated animate__bounceInDown">📚 Student Management System</h1>
+        
+        <div class="form-section">
+            <form id="studentForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Student Name</label>
+                        <input type="text" id="name" placeholder="Enter name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rollNo">Roll Number</label>
+                        <input type="text" id="rollNo" placeholder="Enter roll number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="grade">Grade</label>
+                        <input type="text" id="grade" placeholder="Enter grade" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-add">Add Student</button>
+            </form>
+        </div>
+
+        <div class="students-section">
+            <h2>Student List</h2>
+            <div id="studentsList" class="empty-message">No students added yet.</div>
+        </div>
+    </div>
+
+    <script>
+        let students = [];
+        let editingId = null;
+
+        const form = document.getElementById('studentForm');
+        const studentsList = document.getElementById('studentsList');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const rollNoInput = document.getElementById('rollNo');
+        const gradeInput = document.getElementById('grade');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (editingId !== null) {
+                updateStudent();
+            } else {
+                addStudent();
+            }
+        });
+
+        function addStudent() {
+            const newStudent = {
+                id: Date.now(),
+                name: nameInput.value,
+                email: emailInput.value,
+                rollNo: rollNoInput.value,
+                grade: gradeInput.value
+            };
+
+            students.push(newStudent);
+            clearForm();
+            renderStudents();
+        }
+
+        function updateStudent() {
+            const student = students.find(s => s.id === editingId);
+            if (student) {
+                student.name = nameInput.value;
+                student.email = emailInput.value;
+                student.rollNo = rollNoInput.value;
+                student.grade = gradeInput.value;
+            }
+            clearForm();
+            editingId = null;
+            renderStudents();
+        }
+
+        function deleteStudent(id) {
+            students = students.filter(s => s.id !== id);
+            renderStudents();
+        }
+
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (student) {
+                nameInput.value = student.name;
+                emailInput.value = student.email;
+                rollNoInput.value = student.rollNo;
+                gradeInput.value = student.grade;
+                editingId = id;
+                nameInput.focus();
+            }
+        }
+
+        function clearForm() {
+            form.reset();
+            editingId = null;
+        }
+
+        function renderStudents() {
+            if (students.length === 0) {
+                studentsList.innerHTML = '<div class="empty-message">No students added yet.</div>';
+                return;
+            }
+
+            studentsList.innerHTML = students.map(student => `
+                <div class="student-card animate__animated animate__fadeInLeft">
+                    <div class="student-info">
+                        <p><strong>Name:</strong> ${student.name}</p>
+                        <p><strong>Email:</strong> ${student.email}</p>
+                        <p><strong>Roll No:</strong> ${student.rollNo}</p>
+                        <p><strong>Grade:</strong> ${student.grade}</p>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-update" onclick="editStudent(${student.id})">Edit</button>
+                        <button class="btn-delete" onclick="deleteStudent(${student.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderStudents();
+    </script>
+</body>
+</html>
